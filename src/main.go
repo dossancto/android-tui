@@ -8,9 +8,7 @@ import (
 )
 
 func main() {
-
-	manifestPath := files.FindManifestPath()
-	data, err := files.ReadManifest(manifestPath)
+	data, err := files.ReadManifest()
 
 	if err != nil {
 		fmt.Println(err)

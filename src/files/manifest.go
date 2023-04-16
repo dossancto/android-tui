@@ -2,18 +2,12 @@ package files
 
 import (
 	"fmt"
-	_ "io/fs"
 	"io/ioutil"
 	"os"
 
 	"github.com/lu-css/android-tui/src/translate-xml"
 	"path/filepath"
-	_ "path/filepath"
 )
-
-func FindManifest() string {
-	return "teste"
-}
 
 func find(dirName string, target string) string {
 	files, err := os.ReadDir(dirName)
@@ -31,6 +25,7 @@ func find(dirName string, target string) string {
 			return filePath
 		}
 
+		//TODO: Don't check gitignored files.
 		if file.IsDir() && file.Name() != ".git" {
 			f := find(filePath, target)
 
@@ -58,8 +53,10 @@ func FindManifestPath() string {
 	return file
 }
 
-func ReadManifest(manifetPath string) ([]byte, error) {
-	file, err := ioutil.ReadFile(manifetPath)
+func ReadManifest() ([]byte, error) {
+	manifestPath := FindManifestPath()
+
+	file, err := ioutil.ReadFile(manifestPath)
 
 	if err != nil {
 

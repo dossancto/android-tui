@@ -5,11 +5,10 @@ type ActivityMetaData struct {
 	Value string `xml:"valeu,attr"`
 }
 
-// Book is a struct with XML tags
 type Activity struct {
 	MetaData ActivityMetaData `xml:"meta-data"`
 	Exported bool             `xml:"exported,attr"`
-	Name     string           `xml:"name,attr"` // attribute tag
+	Name     string           `xml:"name,attr"`
 }
 
 type Application struct {
