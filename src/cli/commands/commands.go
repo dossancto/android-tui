@@ -8,6 +8,11 @@ var BaseComands = []Command{
 		Action:      ManifestCommand,
 		Description: "Manifest commands",
 	},
+	{
+		Name:        "run",
+		Action:      RunCommand,
+		Description: "compile commands",
+	},
 }
 
 func UseCommand(commandName string, args []string, commands []Command) bool {

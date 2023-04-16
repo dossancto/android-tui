@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-var ManifestCommands = []Command{
+var manifestCommands = []Command{
 	{
 		"permittion",
 		Permissions,
@@ -27,8 +27,6 @@ var ManifestCommands = []Command{
 }
 
 func ManifestCommand(args []string) error {
-	fmt.Println(args)
-
 	if len(args) <= 1 {
 		println("HELP MANIFEST")
 		return nil
@@ -38,7 +36,7 @@ func ManifestCommand(args []string) error {
 
 	commandName := newArgs[0]
 
-	if UseCommand(commandName, newArgs, ManifestCommands) {
+	if UseCommand(commandName, newArgs, manifestCommands) {
 		return nil
 	}
 
@@ -104,7 +102,7 @@ func Activities(args []string) error {
 
 	for _, activity := range manifest.Application.Activities {
 		activityName := strings.Replace(activity.Name, manifest.Package+".", "", 1)
-		s := fmt.Sprintf("%1s %-20s", "", activityName)
+		s := fmt.Sprintf("%1s %-20s %s", "", activityName, activity.Filter.Category.Name)
 
 		fmt.Println(s)
 	}

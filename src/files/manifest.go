@@ -9,6 +9,23 @@ import (
 	"path/filepath"
 )
 
+func GetManifest() translate_xml.Manifest {
+	data, err := ReadManifest()
+
+	if err != nil {
+		fmt.Println(err)
+		return translate_xml.Manifest{}
+	}
+
+	manifest, err := translate_xml.ParseManifest(data)
+	if err != nil {
+		fmt.Println(err)
+		return translate_xml.Manifest{}
+	}
+
+	return manifest
+}
+
 func find(dirName string, target string) string {
 	files, err := os.ReadDir(dirName)
 
@@ -65,6 +82,17 @@ func ReadManifest() ([]byte, error) {
 
 	return file, nil
 
+}
+
+func GetLaunchActitity(activities []translate_xml.Activity) translate_xml.Activity {
+
+	for _, activity := range activities {
+		if activity.Filter.Category.Name == "android.intent.category.LAUNCHER" {
+			return activity
+		}
+	}
+
+	return translate_xml.Activity{}
 }
 
 func PrinParsedManifest(manifest translate_xml.Manifest) {

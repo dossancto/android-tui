@@ -5,10 +5,24 @@ type ActivityMetaData struct {
 	Value string `xml:"valeu,attr"`
 }
 
+type IntentAction struct {
+	Name string `xml:"name,attr"`
+}
+
+type IntentCategory struct {
+	Name string `xml:"name,attr"`
+}
+
+type IntentFilter struct {
+	Action   IntentAction   `xml:"action"`
+	Category IntentCategory `xml:"category"`
+}
+
 type Activity struct {
 	MetaData ActivityMetaData `xml:"meta-data"`
 	Exported bool             `xml:"exported,attr"`
 	Name     string           `xml:"name,attr"`
+	Filter   IntentFilter     `xml:"intent-filter"`
 }
 
 type Application struct {
