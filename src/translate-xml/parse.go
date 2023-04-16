@@ -16,4 +16,3 @@ func ParseManifest(data []byte) (Manifest, error) {
 
 	return manifest, nil
 }
-
