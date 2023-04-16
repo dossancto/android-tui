@@ -26,9 +26,15 @@ var manifestCommands = []Command{
 	},
 }
 
+func manifestHelp() {
+	for _, cmd := range manifestCommands {
+		fmt.Println(cmd.Name)
+	}
+}
+
 func ManifestCommand(args []string) error {
 	if len(args) <= 1 {
-		println("HELP MANIFEST")
+    manifestHelp()
 		return nil
 	}
 

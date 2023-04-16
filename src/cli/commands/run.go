@@ -23,7 +23,7 @@ var runCommands = []Command{
 
 func RunCommand(args []string) error {
 	if len(args) <= 1 {
-		help()
+		runHelp()
 		return nil
 	}
 
@@ -41,7 +41,7 @@ func RunCommand(args []string) error {
 	return nil
 }
 
-func help() {
+func runHelp() {
 	for _, cmd := range runCommands {
 		fmt.Println(cmd.Name)
 	}
