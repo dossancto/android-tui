@@ -3,18 +3,25 @@ package main
 import (
 	"fmt"
 
-	"github.com/lu-css/android-tui/src/files"
-	"github.com/lu-css/android-tui/src/translate-xml"
+	"os"
+
+	"github.com/lu-css/android-tui/src/cli/commands"
 )
 
 func main() {
-	data, err := files.ReadManifest()
-
-	if err != nil {
-		fmt.Println(err)
+	if len(os.Args) < 2 {
+		fmt.Println("HELP")
+		return
 	}
 
-	manifest, _ := translate_xml.ParseManifest(data)
+	args := os.Args[1:]
 
-	files.PrinParsedManifest(manifest)
+	if os.Args[1] == "help" {
+		commands.Help()
+		return
+	}
+
+	if !commands.UseCommand(os.Args[1], args, commands.BaseComands) {
+		println("Command not found")
+	}
 }
