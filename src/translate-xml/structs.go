@@ -26,7 +26,7 @@ type Activity struct {
 }
 
 type Application struct {
-	AllowBackup         string     `xml:"allowBackup,attr"`
+	AllowBackup         bool       `xml:"allowBackup,attr"`
 	DataExtractionRules string     `xml:"dataExtractionRules,attr"`
 	FullBackupContent   string     `xml:"fullBackupContent,attr"`
 	Icon                string     `xml:"icon,attr"`

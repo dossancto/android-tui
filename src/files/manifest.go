@@ -42,14 +42,13 @@ func find(dirName string, target string) string {
 			return filePath
 		}
 
-		//TODO: Don't check gitignored files.
-		if file.IsDir() && file.Name() != ".git" {
-			f := find(filePath, target)
+		//TODO: Ignore git ignored files
+		if !file.IsDir() || file.Name() == ".git" {
+			continue
+		}
 
-			if f != "" {
-				return f
-			}
-
+		if f := find(filePath, target); f != "" {
+			return f
 		}
 
 	}
