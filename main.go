@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/lu-css/android-tui/src/cli/commands"
+	"github.com/lu-css/android-tui/src/cli/commands/more"
 	"github.com/lu-css/android-tui/src/validations"
 )
 
@@ -28,7 +29,7 @@ func main() {
 		return
 	}
 
-	if !commands.UseCommand(os.Args[1], args, commands.BaseComands) {
+	if !more.UseCommand(os.Args[1], args, commands.BaseComands) {
 		println("Command not found")
 	}
 }

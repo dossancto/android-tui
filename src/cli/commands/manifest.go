@@ -3,26 +3,27 @@ package commands
 import (
 	"fmt"
 
+	"github.com/lu-css/android-tui/src/cli/commands/more"
 	"github.com/lu-css/android-tui/src/files"
 	"github.com/lu-css/android-tui/src/translate-xml"
 	"strings"
 )
 
-var manifestCommands = []Command{
+var manifestCommands = []more.Command{
 	{
-		"permittion",
-		Permissions,
-		"Show all permittions",
+		Name:        "permittion",
+		Action:      Permissions,
+		Description: "Show all permittions",
 	},
 	{
-		"activity",
-		Activities,
-		"Show all permittions",
+		Name:        "activity",
+		Action:      Activities,
+		Description: "Show all permittions",
 	},
 	{
-		"feature",
-		Features,
-		"Show all features",
+		Name:        "feature",
+		Action:      Features,
+		Description: "Show all features",
 	},
 }
 
@@ -34,7 +35,7 @@ func manifestHelp() {
 
 func ManifestCommand(args []string) error {
 	if len(args) <= 1 {
-    manifestHelp()
+		manifestHelp()
 		return nil
 	}
 
@@ -42,7 +43,7 @@ func ManifestCommand(args []string) error {
 
 	commandName := newArgs[0]
 
-	if UseCommand(commandName, newArgs, manifestCommands) {
+	if more.UseCommand(commandName, newArgs, manifestCommands) {
 		return nil
 	}
 

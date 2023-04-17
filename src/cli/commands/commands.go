@@ -1,8 +1,12 @@
 package commands
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/lu-css/android-tui/src/cli/commands/more"
+	"github.com/lu-css/android-tui/src/cli/commands/scaffold"
+)
 
-var BaseComands = []Command{
+var BaseComands = []more.Command{
 	{
 		Name:        "manifest",
 		Action:      ManifestCommand,
@@ -13,17 +17,11 @@ var BaseComands = []Command{
 		Action:      RunCommand,
 		Description: "compile commands",
 	},
-}
-
-func UseCommand(commandName string, args []string, commands []Command) bool {
-	for _, command := range commands {
-		if command.Name == commandName {
-			command.Action(args)
-			return true
-		}
-	}
-
-	return false
+	{
+		Name:        "scaffold",
+		Action:      scaffold.ScaffoldCommand,
+		Description: "compile commands",
+	},
 }
 
 func Help() {

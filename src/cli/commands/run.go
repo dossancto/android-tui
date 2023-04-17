@@ -5,19 +5,20 @@ import (
 	"log"
 	"os/exec"
 
+	"github.com/lu-css/android-tui/src/cli/commands/more"
 	"github.com/lu-css/android-tui/src/files"
 )
 
-var runCommands = []Command{
+var runCommands = []more.Command{
 	{
-		"open",
-		Open,
-		"Open the app in a device",
+		Name:        "open",
+		Action:      Open,
+		Description: "Open the app in a device",
 	},
 	{
-		"run",
-		run,
-		"Compiles and open the project",
+		Name:        "run",
+		Action:      run,
+		Description: "Compiles and open the project",
 	},
 }
 
@@ -31,7 +32,7 @@ func RunCommand(args []string) error {
 
 	commandName := newArgs[0]
 
-	if UseCommand(commandName, newArgs, runCommands) {
+	if more.UseCommand(commandName, newArgs, runCommands) {
 		return nil
 	}
 
@@ -88,7 +89,7 @@ func run(args []string) error {
 		log.Fatal(err)
 	}
 
-  Open(nil)
+	Open(nil)
 
 	return nil
 }
