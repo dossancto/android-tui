@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func BaseTemplateLayout(activityName string) string {
+func baseTemplateLayout(activityName string) string {
 	cleanActivityName := strings.Trim(activityName, "\n")
 
 	template := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?>
@@ -24,30 +24,30 @@ func BaseTemplateLayout(activityName string) string {
 }
 
 func readActivityName() string {
-	var err error
-	var activityName string
-
 	reader := bufio.NewReader(os.Stdin)
 
 	for true {
 		fmt.Print("Activity name: ")
-		activityName, err = reader.ReadString('\n')
+		activityName, err := reader.ReadString('\n')
+
+		if err != nil {
+			fmt.Println(err)
+		}
 
 		if ValidActivityName(activityName) {
 			return activityName
 		}
 
-		fmt.Println(err)
+		fmt.Println("Invalid Activity name, pleace try again.")
 	}
 
-	return activityName
+	return ""
 }
 
 func GenLayout(args []string) error {
-
 	activityName := readActivityName()
 
-	layout := BaseTemplateLayout(activityName)
+	layout := baseTemplateLayout(activityName)
 
 	fmt.Println(layout)
 
