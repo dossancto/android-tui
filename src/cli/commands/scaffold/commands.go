@@ -7,8 +7,8 @@ import (
 
 var ScaffoldCommands = []more.Command{
 	{
-		Name:        "layout",
-		Action:      GenLayout,
+		Name:        "gen",
+		Action:      ChooseGenerate,
 		Description: "Manifest commands",
 	},
 }

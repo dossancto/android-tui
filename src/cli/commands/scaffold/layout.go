@@ -1,10 +1,11 @@
 package scaffold
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/paulrademacher/climenu"
 )
 
 func baseTemplateLayout(activityName string) string {
@@ -23,29 +24,31 @@ func baseTemplateLayout(activityName string) string {
 	return template
 }
 
-func readActivityName() string {
-	reader := bufio.NewReader(os.Stdin)
+func ChooseGenerate(args []string) error {
+	menu := climenu.NewButtonMenu("Scaffold", "Choose item to generate ")
 
-	for true {
-		fmt.Print("Activity name: ")
-		activityName, err := reader.ReadString('\n')
+	menu.AddMenuItem("Activity", "activity")
+	menu.AddMenuItem("Fragment", "fragment")
+	menu.AddMenuItem("Folder", "folder")
 
-		if err != nil {
-			fmt.Println(err)
-		}
+	action, escaped := menu.Run()
 
-		if ValidActivityName(activityName) {
-			return activityName
-		}
-
-		fmt.Println("Invalid Activity name, pleace try again.")
+	if escaped {
+		os.Exit(0)
 	}
 
-	return ""
+	switch action {
+	case "activity":
+		GenLayout(args)
+		break
+
+	}
+
+	return nil
 }
 
 func GenLayout(args []string) error {
-	activityName := readActivityName()
+	activityName := climenu.GetText("ActivityName", "nothing")
 
 	layout := baseTemplateLayout(activityName)
 
