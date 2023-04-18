@@ -51,8 +51,14 @@ func runHelp() {
 
 func Open(args []string) error {
 	manifest := files.GetManifest()
-	launchActivityName := files.GetLaunchActitity(manifest.Application.Activities).Name
-	launchString := manifest.Package + "/" + launchActivityName
+
+	launchActivity, err := manifest.Application.GetLaunchActitity()
+
+	if err != nil {
+		return err
+	}
+
+	launchString := manifest.Package + "/" + launchActivity.Name
 
 	cmd := exec.Command("adb", "shell", "am", "start", "-n", launchString)
 
