@@ -2,12 +2,12 @@ package generate
 
 import (
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/lu-css/android-tui/src/files"
+	"github.com/lu-css/android-tui/src/validations"
 
-	"github.com/paulrademacher/climenu"
+	"github.com/manifoldco/promptui"
 )
 
 func baseTemplateLayout(activityName string) (string, string) {
@@ -50,31 +50,55 @@ func baseJavaLayout(ActivityName string, layoutName string) string {
 
 }
 func ChooseActivity() error {
-	menu := climenu.NewButtonMenu("Activity", "Choose a activity template to generate ")
-
-	menu.AddMenuItem("Empty", "empty")
-
-	action, escaped := menu.Run()
-
-	if escaped {
-		os.Exit(0)
+	activitiesTypes := []string{
+		"Empty",
 	}
 
-	switch action {
+	templates := &promptui.SelectTemplates{
+		Label:    "{{ . }}?",
+		Active:   "\U000027A1 {{ . | cyan }}",
+		Inactive: "  {{ . | cyan }} ",
+		Selected: "Activity Model: {{ . | red | cyan }}",
+	}
+
+	prompt := promptui.Select{
+		Label:     "Select a Model",
+		Items:     activitiesTypes,
+		Templates: templates,
+		Size:      4,
+	}
+
+	i, _, err := prompt.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return nil
+	}
+
+	switch strings.ToLower(activitiesTypes[i]) {
 	case "empty":
 		genEmptyActivity()
 		break
 	}
 
 	return nil
-
 }
 
 func genEmptyActivity() {
-	activityName := climenu.GetText("ActivityName", "nothing")
+	prompt := promptui.Prompt{
+		Label:    "Activity Name",
+		Validate: validations.NonBlankInput,
+	}
 
-	layout, layoutName := baseTemplateLayout(activityName)
-	javaCode := baseJavaLayout(activityName, layoutName)
+	result, err := prompt.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return
+	}
+
+	layout, layoutName := baseTemplateLayout(result)
+	javaCode := baseJavaLayout(result, layoutName)
 
 	fmt.Println(layout)
 	fmt.Println(javaCode)

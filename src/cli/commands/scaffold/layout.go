@@ -1,26 +1,42 @@
 package scaffold
 
 import (
-	"github.com/lu-css/android-tui/src/cli/commands/scaffold/generate"
-	"os"
+	"fmt"
+	"strings"
 
-	"github.com/paulrademacher/climenu"
+	"github.com/lu-css/android-tui/src/cli/commands/scaffold/generate"
+	"github.com/manifoldco/promptui"
 )
 
 func ChooseGenerate(args []string) error {
-	menu := climenu.NewButtonMenu("Scaffold", "Choose item to generate ")
-
-	menu.AddMenuItem("Activity", "activity")
-	menu.AddMenuItem("Fragment", "fragment")
-	menu.AddMenuItem("Folder", "folder")
-
-	action, escaped := menu.Run()
-
-	if escaped {
-		os.Exit(0)
+	generateTypes := []string{
+		"Activity",
+		"Fragment",
+		"Folder",
 	}
 
-	switch action {
+	templates := &promptui.SelectTemplates{
+		Label:    "{{ . }}?",
+		Active:   "\U000027A1 {{ . | cyan }}",
+		Inactive: "  {{ . | cyan }} ",
+		Selected: "Generete: {{ . | red | cyan }}",
+	}
+
+	prompt := promptui.Select{
+		Label:     "Select a Model",
+		Items:     generateTypes,
+		Templates: templates,
+		Size:      4,
+	}
+
+	i, _, err := prompt.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return nil
+	}
+
+	switch strings.ToLower(generateTypes[i]) {
 	case "activity":
 		generate.ChooseActivity()
 		break
