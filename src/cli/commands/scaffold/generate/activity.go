@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/lu-css/android-tui/src/files"
+	"github.com/lu-css/android-tui/src/translate-xml"
 	"github.com/lu-css/android-tui/src/validations"
 
 	"github.com/manifoldco/promptui"
@@ -102,4 +103,23 @@ func genEmptyActivity() {
 
 	fmt.Println(layout)
 	fmt.Println(javaCode)
+
+	updateManifest(result)
+}
+
+func updateManifest(activityName string) {
+	manifest := files.GetManifest()
+
+	activity := translate_xml.Activity{
+		MetaData: translate_xml.ActivityMetaData{},
+		Exported: false,
+		Name:     activityName,
+		Filter:   translate_xml.IntentFilter{},
+	}
+
+	manifest.Application.Activities = append(manifest.Application.Activities, activity)
+
+	manifestFile := translate_xml.ToManifestFile(manifest)
+
+	fmt.Println(manifestFile.GetXmlFile())
 }

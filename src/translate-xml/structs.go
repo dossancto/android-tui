@@ -48,6 +48,7 @@ type UsesFeature struct {
 }
 
 type Manifest struct {
+	Android     string           `xml:"android,attr"`
 	Tools       string           `xml:"tools,attr"`
 	Package     string           `xml:"package,attr"`
 	Permissions []UsesPermission `xml:"uses-permission"`

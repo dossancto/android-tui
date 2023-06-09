@@ -58,3 +58,55 @@ func (manifest Manifest) PrinParsedManifest() {
 
 	}
 }
+
+func (m *manifest) copyPermittionsToFile(permittions []UsesPermission) {
+	for i, p := range permittions {
+		m.Permissions[i].Name = p.Name
+	}
+}
+
+func (m *manifest) copyFeaturesToFile(features []UsesFeature) {
+	for i, f := range features {
+		m.Features[i].Name = f.Name
+		m.Features[i].Required = f.Required
+	}
+}
+
+func (m *manifest) copyApplication(application Application) {
+	m.Application.AllowBackup = application.AllowBackup
+	m.Application.DataExtractionRules = application.DataExtractionRules
+	m.Application.FullBackupContent = application.FullBackupContent
+	m.Application.Icon = application.Icon
+	m.Application.Label = application.Label
+	m.Application.RoundIcon = application.RoundIcon
+	m.Application.SupportsRtl = application.SupportsRtl
+	m.Application.TargetApi = application.TargetApi
+	m.Application.Theme = application.Theme
+}
+
+func (m *manifest) copyActivities(activities []Activity) {
+	for _, a := range activities {
+		action := IntentActionFile{
+			Name: a.Filter.Action.Name,
+		}
+
+		filter := IntentFilterFile{
+			Action:   action,
+			Category: IntentCategoryFile{},
+		}
+
+		metaData := ActivityMetaDataFile{
+			Name:  a.MetaData.Name,
+			Value: a.MetaData.Value,
+		}
+
+		activity := ActivityFile{
+			Name:     a.Name,
+			Exported: a.Exported,
+			MetaData: metaData,
+			Filter:   filter,
+		}
+
+		m.Application.Activities = append(m.Application.Activities, activity)
+	}
+}
