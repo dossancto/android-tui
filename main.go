@@ -7,14 +7,10 @@ import (
 	"github.com/lu-css/android-tui/src/cli/commands"
 	"github.com/lu-css/android-tui/src/cli/commands/more"
 	// "github.com/lu-css/android-tui/src/files"
-	"github.com/lu-css/android-tui/pkg/parsegradle"
 	"github.com/lu-css/android-tui/src/validations"
 )
 
 func main() {
-
-	// files.GetGradleBuildConfig()
-  parsegradle.GetGradleBuildConfig()
 
 	if !validations.GradleFileExists() {
 		s := fmt.Errorf("Gradle Project not found, place enter the app directory")

@@ -39,5 +39,4 @@ type DependenciesConfig struct {
 
 type GradleProject struct {
 	Android      AndroidConfig
-	Dependencies DependenciesConfig
 }

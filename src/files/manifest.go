@@ -23,7 +23,8 @@ func GetManifest() translate_xml.Manifest {
 		return translate_xml.Manifest{}
 	}
 
-  manifest.Package = "com.example."
+	androidConfig := GetGradleBuildConfig()
+	manifest.Package = androidConfig.DefaultConfig.ApplicationId
 	return manifest
 }
 

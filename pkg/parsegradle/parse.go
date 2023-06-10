@@ -2,28 +2,26 @@ package parsegradle
 
 import (
 	"bufio"
-	"fmt"
+	// "fmt"
 	"log"
 	"strings"
 )
 
-func parse(file string) GradleProject {
-	fmt.Println("Start")
-
+func Parse(file string) AndroidConfig {
 	reader := strings.NewReader(file)
 	scan := bufio.NewScanner(reader)
-
-	// Iterate over each line of the file
-	gradle := parseBlocks(scan, 0, "")
 
 	if err := scan.Err(); err != nil {
 		log.Fatal(err)
 	}
-	return gradle
+
+	// Iterate over each line of the file
+
+	return parseBlocks(scan, 0, "")
 }
 
-func parseBlocks(scan *bufio.Scanner, originalDepth int, contextFather string) GradleProject {
-	var gradle GradleProject
+func parseBlocks(scan *bufio.Scanner, originalDepth int, contextFather string) AndroidConfig {
+	var gradle AndroidConfig
 
 	depth := originalDepth
 	blockName := contextFather
@@ -33,7 +31,9 @@ func parseBlocks(scan *bufio.Scanner, originalDepth int, contextFather string) G
 
 		if countOpenBreakts(line, &depth) {
 			blockName = clearBlockName(line)
-			parseBlocks(scan, depth, blockName)
+			if strings.Contains("android", blockName) {
+				return parseAndroidConfig(scan)
+			}
 			continue
 		}
 
@@ -41,16 +41,13 @@ func parseBlocks(scan *bufio.Scanner, originalDepth int, contextFather string) G
 			continue
 		}
 
-		k, v := spliGradleKeyValue(line)
+		// k, v := spliGradleKeyValue(line)
 
 		// A valid key value struct
-		if v != "" {
-			err := parseKeyValue(k, v, blockName, &gradle)
-
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
+		// if v != "" {
+		// 	android := parseKeyValue(k, v, blockName)
+		// 	fmt.Println(android)
+		// }
 
 		if depth < originalDepth {
 			break
@@ -60,14 +57,12 @@ func parseBlocks(scan *bufio.Scanner, originalDepth int, contextFather string) G
 	return gradle
 }
 
-func parseKeyValue(key string, value string, context string, gradle *GradleProject) error {
-	fmt.Println("CONTEXT => " + context)
+func parseKeyValue(key string, value string, context string) AndroidConfig {
 	if strings.Contains(context, "android") {
-		androidConfig(gradle, key, value)
-		fmt.Println("CUUUUUUUUUUu")
+		return AndroidConfig{}
 	}
 
-	return nil
+	return AndroidConfig{}
 }
 
 func spliGradleKeyValue(line string) (string, string) {

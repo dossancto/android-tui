@@ -32,7 +32,7 @@ func baseJavaLayout(ActivityName string, layoutName string) string {
 	manifest := files.GetManifest()
 	className := utils.CapitalizeFirstChar(ActivityName)
 
-	javapackage := manifest.Package + className
+	javapackage := manifest.Package
 
 	template := fmt.Sprintf(`
     package %s;
