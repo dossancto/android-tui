@@ -7,33 +7,33 @@ import (
 	"strings"
 )
 
-func parse(file string, v any) any {
-	var gradleProject GradleProject
-
+func parse(file string) GradleProject {
 	fmt.Println("Start")
 
 	reader := strings.NewReader(file)
 	scan := bufio.NewScanner(reader)
 
 	// Iterate over each line of the file
-	parseBlocks(scan, 0, v, &gradleProject, "")
+	gradle := parseBlocks(scan, 0, "")
 
 	if err := scan.Err(); err != nil {
 		log.Fatal(err)
 	}
-	return "a"
+	return gradle
 }
 
-func parseBlocks(scan *bufio.Scanner, originalDepth int, v any, gradleProject *GradleProject, contextFather string) {
+func parseBlocks(scan *bufio.Scanner, originalDepth int, contextFather string) GradleProject {
+	var gradle GradleProject
+
 	depth := originalDepth
-  blockName := contextFather
+	blockName := contextFather
 
 	for scan.Scan() {
 		line := scan.Text()
 
 		if countOpenBreakts(line, &depth) {
 			blockName = clearBlockName(line)
-			parseBlocks(scan, depth, v, gradleProject, blockName)
+			parseBlocks(scan, depth, blockName)
 			continue
 		}
 
@@ -45,7 +45,7 @@ func parseBlocks(scan *bufio.Scanner, originalDepth int, v any, gradleProject *G
 
 		// A valid key value struct
 		if v != "" {
-			err := parseKeyValue(k, v, blockName)
+			err := parseKeyValue(k, v, blockName, &gradle)
 
 			if err != nil {
 				log.Fatal(err)
@@ -56,15 +56,15 @@ func parseBlocks(scan *bufio.Scanner, originalDepth int, v any, gradleProject *G
 			break
 		}
 	}
+
+	return gradle
 }
 
-func parseKeyValue(key string, value string, context string) error {
+func parseKeyValue(key string, value string, context string, gradle *GradleProject) error {
 	fmt.Println("CONTEXT => " + context)
-	var gradle GradleProject
-
 	if strings.Contains(context, "android") {
-		androidConfig(&gradle, key, value)
-    fmt.Println("CUUUUUUUUUUu")
+		androidConfig(gradle, key, value)
+		fmt.Println("CUUUUUUUUUUu")
 	}
 
 	return nil

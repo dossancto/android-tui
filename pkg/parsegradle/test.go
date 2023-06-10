@@ -19,9 +19,7 @@ func readGradleFile() string {
 }
 
 func GetGradleBuildConfig() {
-  var gradleConfig GradleProject
-	// Open the .gradle file
 	file := readGradleFile()
 
-	parse(file, &gradleConfig)
+	parse(file)
 }
