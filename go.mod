@@ -3,6 +3,7 @@ module github.com/lu-css/android-tui
 go 1.19
 
 require (
+	github.com/go-xmlfmt/xmlfmt v1.1.2
 	github.com/manifoldco/promptui v0.9.0
 	github.com/paulrademacher/climenu v0.0.0-20151110221007-a1afbb4e378b
 )

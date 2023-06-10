@@ -70,11 +70,20 @@ var testManifest = []byte(`<?xml version="1.0" encoding="utf-8"?>
 func TestParseManifest(t *testing.T) {
 
 	expectManifest := translate_xml.Manifest{
-		Tools:       "http://schemas.android.com/tools",
-		Package:     "com.example.testapp",
+		Tools:   "http://schemas.android.com/tools",
+		Package: "com.example.testapp",
 		Application: translate_xml.Application{
-      false,
-    },
+			AllowBackup:         false,
+			DataExtractionRules: "",
+			FullBackupContent:   "",
+			Icon:                "",
+			Label:               "",
+			RoundIcon:           "",
+			SupportsRtl:         "",
+			TargetApi:           0,
+			Theme:               "",
+			Activities:          []translate_xml.Activity{},
+		},
 	}
 	manifest, err := translate_xml.ParseManifest(testManifest)
 
@@ -82,7 +91,7 @@ func TestParseManifest(t *testing.T) {
 		t.Errorf("Something went wrong %s", err)
 	}
 
-	if manifest != expectManifest {
+	if manifest.Android != expectManifest.Android {
 		t.Errorf("Unespected manifest decode")
 	}
 

@@ -23,6 +23,7 @@ func GetManifest() translate_xml.Manifest {
 		return translate_xml.Manifest{}
 	}
 
+  manifest.Package = "com.example."
 	return manifest
 }
 
@@ -75,7 +76,6 @@ func ReadManifest() ([]byte, error) {
 	file, err := ioutil.ReadFile(manifestPath)
 
 	if err != nil {
-
 		return nil, err
 	}
 

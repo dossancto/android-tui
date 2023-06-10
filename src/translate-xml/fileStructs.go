@@ -1,6 +1,6 @@
 package translate_xml
 
-type manifest struct {
+type ManifestFile struct {
 	Android     string               `xml:"xmlns:android,attr"`
 	Tools       string               `xml:"xmlns:tools,attr"`
 	Permissions []UsesPermissionFile `xml:"uses-permission"`

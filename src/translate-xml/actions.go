@@ -59,20 +59,26 @@ func (manifest Manifest) PrinParsedManifest() {
 	}
 }
 
-func (m *manifest) copyPermittionsToFile(permittions []UsesPermission) {
-	for i, p := range permittions {
-		m.Permissions[i].Name = p.Name
+func (m *ManifestFile) copyPermittionsToFile(permittions []UsesPermission) {
+	for _, p := range permittions {
+    permittion := UsesPermissionFile{
+    	Name: p.Name,
+    }
+		m.Permissions = append(m.Permissions, permittion)
 	}
 }
 
-func (m *manifest) copyFeaturesToFile(features []UsesFeature) {
-	for i, f := range features {
-		m.Features[i].Name = f.Name
-		m.Features[i].Required = f.Required
+func (m *ManifestFile) copyFeaturesToFile(features []UsesFeature) {
+	for _, f := range features {
+		feature := UsesFeatureFile{
+			Name:     f.Name,
+			Required: f.Required,
+		}
+		m.Features = append(m.Features, feature)
 	}
 }
 
-func (m *manifest) copyApplication(application Application) {
+func (m *ManifestFile) copyApplication(application Application) {
 	m.Application.AllowBackup = application.AllowBackup
 	m.Application.DataExtractionRules = application.DataExtractionRules
 	m.Application.FullBackupContent = application.FullBackupContent
@@ -84,7 +90,7 @@ func (m *manifest) copyApplication(application Application) {
 	m.Application.Theme = application.Theme
 }
 
-func (m *manifest) copyActivities(activities []Activity) {
+func (m *ManifestFile) copyActivities(activities []Activity) {
 	for _, a := range activities {
 		action := IntentActionFile{
 			Name: a.Filter.Action.Name,

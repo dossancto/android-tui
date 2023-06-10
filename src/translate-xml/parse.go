@@ -2,7 +2,9 @@ package translate_xml
 
 import (
 	"encoding/xml"
+  "github.com/go-xmlfmt/xmlfmt"
 	"log"
+	"strings"
 )
 
 func ParseManifest(data []byte) (Manifest, error) {
@@ -16,8 +18,8 @@ func ParseManifest(data []byte) (Manifest, error) {
 	return manifest, nil
 }
 
-func ToManifestFile(manifesto Manifest) manifest {
-	var manifestFile manifest
+func ToManifestFile(manifesto Manifest) ManifestFile {
+	var manifestFile ManifestFile
 
 	manifestFile.Android = manifesto.Android
 	manifestFile.Tools = manifesto.Tools
@@ -29,12 +31,20 @@ func ToManifestFile(manifesto Manifest) manifest {
 	return manifestFile
 }
 
-func (manifest manifest) GetXmlFile() string {
+func (manifest ManifestFile) GetXmlFile() string {
 	a, err := xml.Marshal(manifest)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return string(a)
+	xml := string(a)
+  ChangeActivityTagName(&xml)
+
+	return xmlfmt.FormatXML(xml, "\t", " ")
+}
+
+func ChangeActivityTagName(xml *string) {
+	*xml = strings.ReplaceAll(*xml, "<ManifestFile", "<manifest")
+	*xml = strings.ReplaceAll(*xml, "</ManifestFile>", "</manifest>")
 }

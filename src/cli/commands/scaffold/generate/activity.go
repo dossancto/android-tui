@@ -6,6 +6,7 @@ import (
 
 	"github.com/lu-css/android-tui/src/files"
 	"github.com/lu-css/android-tui/src/translate-xml"
+	"github.com/lu-css/android-tui/src/utils"
 	"github.com/lu-css/android-tui/src/validations"
 
 	"github.com/manifoldco/promptui"
@@ -29,7 +30,9 @@ func baseTemplateLayout(activityName string) (string, string) {
 
 func baseJavaLayout(ActivityName string, layoutName string) string {
 	manifest := files.GetManifest()
-	className := ActivityName
+	className := utils.CapitalizeFirstChar(ActivityName)
+
+	javapackage := manifest.Package + className
 
 	template := fmt.Sprintf(`
     package %s;
@@ -45,7 +48,7 @@ func baseJavaLayout(ActivityName string, layoutName string) string {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.%s);
         }
-    } `, manifest.Package, className, layoutName)
+    } `, javapackage, className, layoutName)
 
 	return template
 
@@ -91,20 +94,20 @@ func genEmptyActivity() {
 		Validate: validations.NonBlankInput,
 	}
 
-	result, err := prompt.Run()
+	activityName, err := prompt.Run()
 
 	if err != nil {
 		fmt.Printf("Prompt failed %v\n", err)
 		return
 	}
 
-	layout, layoutName := baseTemplateLayout(result)
-	javaCode := baseJavaLayout(result, layoutName)
+	layout, layoutName := baseTemplateLayout(activityName)
+	javaCode := baseJavaLayout(activityName, layoutName)
 
 	fmt.Println(layout)
 	fmt.Println(javaCode)
 
-	updateManifest(result)
+	updateManifest(activityName)
 }
 
 func updateManifest(activityName string) {
@@ -113,7 +116,7 @@ func updateManifest(activityName string) {
 	activity := translate_xml.Activity{
 		MetaData: translate_xml.ActivityMetaData{},
 		Exported: false,
-		Name:     activityName,
+		Name:     "." + activityName,
 		Filter:   translate_xml.IntentFilter{},
 	}
 
